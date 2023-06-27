@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 # Set up the game window
-WIDTH = 1000
-HEIGHT = 1000
+WIDTH = 800
+HEIGHT = 600
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Covid Survival Game")
 
@@ -15,22 +15,25 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 # Load images
-player_img = pygame.image.load("player.png")
-zombie_img = pygame.image.load("zombie2.png")
-syringe_img = pygame.image.load("syringe.png")
-mask_img = pygame.image.load("mask.png")
-hazmat_img = pygame.image.load("hazmat.png")
-cure_img = pygame.image.load("cure.png")
-grenade_img = pygame.image.load("grenade.png")
-ammo_img = pygame.image.load("ammo.png")
+player_img = pygame.transform.scale(pygame.image.load("player.png"), (50,50))
+zombie_img = pygame.transform.scale(pygame.image.load("zombie.png"), (50,50))
+syringe_img = pygame.transform.scale(pygame.image.load("syringe.png"), (30,30))
+mask_img = pygame.transform.scale(pygame.image.load("mask.png"), (30,30))
+hazmat_img = pygame.transform.scale(pygame.image.load("hazmat.png"), (50,50))
+cure_img = pygame.transform.scale(pygame.image.load("cure.png"), (50,50))
+grenade_img = pygame.transform.scale(pygame.image.load("grenade.png"), (30,30))
+ammo_img = pygame.transform.scale(pygame.image.load("ammo.png"), (20,20))
+
+
 
 # Set up the player
-player_width = 120
-player_height = 120
+player_width = 32
+player_height = 32
 player_x = (WIDTH - player_width) // 2
 player_y = HEIGHT - player_height - 10
 player_speed = 5
 player_health = 100
+max_health = player_health
 
 # Set up syringe gun
 syringe_width = 32
@@ -86,7 +89,7 @@ def draw_powerup(x, y, powerup_type):
 def fire_syringe():
     global syringe_state
     syringe_state = "fire"
-    pygame.mixer.Sound("shoot.wav").play()
+    #   pygame.mixer.Sound("shoot.wav").play()
 
 def is_collision(obj1_x, obj1_y, obj1_width, obj1_height, obj2_x, obj2_y, obj2_width, obj2_height):
     if obj1_x < obj2_x + obj2_width and obj1_x + obj1_width > obj2_x and obj1_y < obj2_y + obj2_height and obj1_y + obj1_height > obj2_y:
@@ -115,11 +118,15 @@ while running:
             running = False
 
         # Handle player movement and firing
-        if event.type == pygame.KEYDOWN and not game_over:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 player_x -= player_speed
             if event.key == pygame.K_RIGHT:
                 player_x += player_speed
+            if event.key == pygame.K_UP:
+                player_y -= player_speed
+            if event.key == pygame.K_DOWN:
+                player_y += player_speed
             if event.key == pygame.K_SPACE:
                 if syringe_state == "ready":
                     syringe_x = player_x + (player_width - syringe_width) // 2
@@ -143,8 +150,8 @@ while running:
         mob["y"] += mob_speed
         if mob["y"] > HEIGHT:
             mobs.remove(mob)
-            if not round_over:
-                player_health -= 10
+            #if not round_over:
+             #   player_health -= 10
 
         # Check for collision between syringe and mobs
         if syringe_state == "fire" and is_collision(syringe_x, syringe_y, syringe_width, syringe_height,
@@ -156,20 +163,24 @@ while running:
     # Check for collision between player and mobs
     for mob in mobs:
         if is_collision(player_x, player_y, player_width, player_height, mob["x"], mob["y"], mob_width, mob_height):
-            player_health -= 10
+            player_health -= 5
 
     # Check for collision between player and power-ups
     for powerup in powerups:
         if is_collision(player_x, player_y, player_width, player_height, powerup["x"], powerup["y"], powerup_width, powerup_height):
             powerups.remove(powerup)
             if powerup["type"] == "mask":
-                player_health += 20
+                if player_health == max_health:
+                    player_health += 20
             elif powerup["type"] == "hazmat":
-                player_health += 50
+                if player_health == max_health:
+                    player_health += 50
             elif powerup["type"] == "cure":
-                player_health += 100
+                if player_health == max_health:
+                    player_health += 100
             elif powerup["type"] == "grenade":
-                player_health = 100
+                if player_health == max_health:
+                    player_health += 100
             elif powerup["type"] == "ammo":
                 syringe_state = "ready"
 
@@ -178,7 +189,7 @@ while running:
         rounds += 1
         if rounds % 5 == 0:
             max_mobs += 1
-            mob_speed += 1
+            #mob_speed += 1
             mob_types.append("boss")
         for _ in range(wave):
             spawn_mob()
