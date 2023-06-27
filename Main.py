@@ -24,12 +24,12 @@ player_width = 64
 player_height = 64
 player_x = (WIDTH - player_width) // 2
 player_y = HEIGHT - player_height - 10
-player_speed = 5
+player_speed = 10
 
 # Set up bullets
 bullet_width = 32
 bullet_height = 32
-bullet_speed = 10
+bullet_speed = 100
 bullet_state = "ready"
 
 # Set up zombies
