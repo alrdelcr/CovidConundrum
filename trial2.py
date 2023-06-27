@@ -31,7 +31,7 @@ player_width = 32
 player_height = 32
 player_x = (WIDTH - player_width) // 2
 player_y = HEIGHT - player_height - 10
-player_speed = 5
+player_speed = 1    
 player_health = 100
 max_health = player_health
 
@@ -49,7 +49,7 @@ mob_height = 64
 mob_speed = 2
 mobs = []
 mob_types = ["normal", "fast", "strong"]
-max_mobs = 5
+max_mobs = 1
 
 # Set up power-ups
 powerup_width = 32
@@ -109,35 +109,65 @@ def spawn_powerup():
     powerup_y = random.randint(50, 150)
     powerups.append({"x": powerup_x, "y": powerup_y, "type": powerup_type})
 
-# Game loop
 running = True
+is_sliding = False
+slide_direction = None
+
 while running:
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        # Handle player movement and firing
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player_x -= player_speed
+                is_sliding = True
+                slide_direction = "LEFT"
             if event.key == pygame.K_RIGHT:
-                player_x += player_speed
+                is_sliding = True
+                slide_direction = "RIGHT"
             if event.key == pygame.K_UP:
-                player_y -= player_speed
+                is_sliding = True
+                slide_direction = "UP"
             if event.key == pygame.K_DOWN:
-                player_y += player_speed
+                is_sliding = True
+                slide_direction = "DOWN"
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT and slide_direction == "LEFT":
+                is_sliding = False
+            if event.key == pygame.K_RIGHT and slide_direction == "RIGHT":
+                is_sliding = False
+            if event.key == pygame.K_UP and slide_direction == "UP":
+                is_sliding = False
+            if event.key == pygame.K_DOWN and slide_direction == "DOWN":
+                is_sliding = False
             if event.key == pygame.K_SPACE:
                 if syringe_state == "ready":
                     syringe_x = player_x + (player_width - syringe_width) // 2
                     syringe_y = player_y - syringe_height
                     fire_syringe()
 
+    # Handle sliding movement
+    if is_sliding:
+        if slide_direction == "LEFT":
+            player_x -= player_speed
+        if slide_direction == "RIGHT":
+            player_x += player_speed
+        if slide_direction == "UP":
+            player_y -= player_speed
+        if slide_direction == "DOWN":
+            player_y += player_speed
+
     # Update player position
     if player_x < 0:
         player_x = 0
     elif player_x > WIDTH - player_width:
         player_x = WIDTH - player_width
+    if player_y < 0:
+        player_y = 0
+    elif player_y > HEIGHT - player_height:
+        player_y = HEIGHT - player_height
 
     # Update syringe position
     if syringe_state == "fire":
