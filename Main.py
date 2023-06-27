@@ -8,7 +8,7 @@ pygame.init()
 WIDTH = 800
 HEIGHT = 600
 win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Zombie Survival Game")
+pygame.display.set_caption("Covid Conundrum")
 
 # Define colors
 WHITE = (255, 255, 255)
