@@ -5,8 +5,8 @@ import random
 pygame.init()
 
 # Set up the game window
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1000
+HEIGHT = 1000
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Zombie Survival Game")
 
