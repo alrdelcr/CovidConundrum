@@ -33,8 +33,8 @@ bullet_speed = 10
 bullet_state = "ready"
 
 # Set up zombies
-zombie_width = 64
-zombie_height = 64
+zombie_width = 32
+zombie_height = 32
 zombie_x = random.randint(0, WIDTH - zombie_width)
 zombie_y = random.randint(50, 150)
 zombie_speed = 2
@@ -120,4 +120,4 @@ while running:
     pygame.display.update()
 
 # Quit the game
-pygame.quit()
+#pygame.quit()
