@@ -62,6 +62,7 @@ powerup_types = ["mask", "hazmat", "cure", "grenade", "ammo"]
 wave = 1
 rounds = 0
 kills = 0
+ammo = 25
 round_over = False
 game_over = False
 
@@ -107,7 +108,7 @@ def spawn_mob():
 def spawn_powerup():
     powerup_type = random.choice(powerup_types)
     powerup_x = random.randint(0, WIDTH - powerup_width)
-    powerup_y = random.randint(50, 150)
+    powerup_y = random.randint(0, HEIGHT - powerup_height)
     powerups.append({"x": powerup_x, "y": powerup_y, "type": powerup_type})
 
 running = True
@@ -144,10 +145,11 @@ while running:
             if event.key == pygame.K_DOWN and slide_direction == "DOWN":
                 is_sliding = False
             if event.key == pygame.K_SPACE:
-                if syringe_state == "ready":
+                if syringe_state == "ready" and ammo > 0:
                     syringe_x = player_x + (player_width - syringe_width) // 2
                     syringe_y = player_y - syringe_height
                     fire_syringe()
+                    ammo -= 1
 
     # Handle sliding movement
     if is_sliding:
@@ -205,17 +207,26 @@ while running:
             if powerup["type"] == "mask":
                 if player_health < max_health:
                     player_health += 20
+                    if player_health > max_health:
+                        player_health = max_health
             elif powerup["type"] == "hazmat":
                 if player_health < max_health:
                     player_health += 50
+                    if player_health > max_health:
+                        player_health = max_health
             elif powerup["type"] == "cure":
                 if player_health < max_health:
                     player_health += 100
+                    if player_health > max_health:
+                        player_health = max_health
             elif powerup["type"] == "grenade":
                 if player_health < max_health:
                     player_health += 100
+                    if player_health > max_health:
+                        player_health = max_health
             elif powerup["type"] == "ammo":
                 syringe_state = "ready"
+                ammo += 5
 
     # Spawn mobs and power-ups
     if len(mobs) == 0 and not round_over:
@@ -252,7 +263,7 @@ while running:
 
     # Draw game information
     font = pygame.font.Font(None, 24)
-    text = font.render(f"Wave: {wave} | Kills: {kills} | Rounds: {rounds}", True, RED)
+    text = font.render(f"Wave: {wave} | Kills: {kills} | Rounds: {rounds} | Ammo: {ammo}", True, RED)
     win.blit(text, (10, 10))
 
     # Update the display
