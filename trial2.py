@@ -27,12 +27,13 @@ ammo_img = pygame.transform.scale(pygame.image.load("ammo.png"), (20,20))
 
 
 # Set up the player
-player_width = 32
-player_height = 32
+player_width = 24
+player_height = 24
 player_x = (WIDTH - player_width) // 2
 player_y = HEIGHT - player_height - 10
 player_speed = 1    
 player_health = 100
+max_bullets = 100
 max_health = player_health
 
 # Set up syringe gun
@@ -194,22 +195,24 @@ while running:
     for mob in mobs:
         if is_collision(player_x, player_y, player_width, player_height, mob["x"], mob["y"], mob_width, mob_height):
             player_health -= 5
+            mobs.remove(mob)
+
 
     # Check for collision between player and power-ups
     for powerup in powerups:
         if is_collision(player_x, player_y, player_width, player_height, powerup["x"], powerup["y"], powerup_width, powerup_height):
             powerups.remove(powerup)
             if powerup["type"] == "mask":
-                if player_health == max_health:
+                if player_health < max_health:
                     player_health += 20
             elif powerup["type"] == "hazmat":
-                if player_health == max_health:
+                if player_health < max_health:
                     player_health += 50
             elif powerup["type"] == "cure":
-                if player_health == max_health:
+                if player_health < max_health:
                     player_health += 100
             elif powerup["type"] == "grenade":
-                if player_health == max_health:
+                if player_health < max_health:
                     player_health += 100
             elif powerup["type"] == "ammo":
                 syringe_state = "ready"
