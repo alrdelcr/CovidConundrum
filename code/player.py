@@ -4,7 +4,7 @@ from settings import *
 class Player(pygame.sprite.Sprite):
 	def __init__(self,pos,groups,obstacle_sprites):
 		super().__init__(groups)
-		self.image = pygame.image.load('/Users/shaysamat/Documents/GitHub/Zelda/4 - camera & ysort/graphics/test/player.png').convert_alpha()
+		self.image = pygame.image.load('/Users/shaysamat/Documents/GitHub/CovidConundrum/graphics/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-26)
 
