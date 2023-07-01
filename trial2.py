@@ -47,7 +47,7 @@ syringe_state = "ready"
 # Set up mobs
 mob_width = 64
 mob_height = 64
-mob_speed = 2
+mob_speed = 1
 mobs = []
 mob_types = ["normal", "fast", "strong"]
 max_mobs = 1
@@ -101,8 +101,23 @@ def is_collision(obj1_x, obj1_y, obj1_width, obj1_height, obj2_x, obj2_y, obj2_w
 def spawn_mob():
     if len(mobs) < max_mobs:
         mob_type = random.choice(mob_types)
-        mob_x = random.randint(0, WIDTH - mob_width)
-        mob_y = random.randint(50, 150)
+
+        global spawn_wall 
+        spawn_wall = random.randint(0,3)
+
+        if spawn_wall == 0:
+            mob_x = random.randint(mob_width, WIDTH - mob_width)
+            mob_y = mob_height
+        elif spawn_wall == 1:
+            mob_x = mob_width
+            mob_y = random.randint(mob_height,HEIGHT - mob_height)
+        elif spawn_wall == 2:
+            mob_x = random.randint(mob_width, WIDTH - mob_width)
+            mob_y = HEIGHT - mob_height
+        elif spawn_wall == 3:
+            mob_x = WIDTH - mob_width
+            mob_y = random.randint(mob_height,HEIGHT-mob_height)
+
         mobs.append({"x": mob_x, "y": mob_y, "type": mob_type})
 
 def spawn_powerup():
@@ -174,14 +189,30 @@ while running:
 
     # Update syringe position
     if syringe_state == "fire":
-        syringe_y -= syringe_speed
-        if syringe_y <= 0:
+        if slide_direction == "UP":
+            syringe_y -= syringe_speed
+        if slide_direction == "DOWN":
+            syringe_y += syringe_speed
+        if slide_direction == "LEFT":
+            syringe_x -= syringe_speed
+        if slide_direction == "RIGHT":
+            syringe_x += syringe_speed
+        if syringe_y <= 0 or syringe_y >= HEIGHT - syringe_height or syringe_x <= 0 or syringe_x >= WIDTH - syringe_width:
             syringe_state = "ready"
 
     # Update mobs
     for mob in mobs:
-        mob["y"] += mob_speed
-        if mob["y"] > HEIGHT:
+        
+        if spawn_wall == 0:
+            mob["y"] += mob_speed
+        elif spawn_wall == 1:
+            mob["x"] += mob_speed
+        elif spawn_wall == 2:
+            mob["y"] -= mob_speed
+        elif spawn_wall == 3:
+            mob["x"] -= mob_speed
+        
+        if mob["y"] > HEIGHT or mob["y"] < 0 or mob["x"] > WIDTH or mob["x"] < 0:
             mobs.remove(mob)
             #if not round_over:
              #   player_health -= 10
@@ -263,7 +294,7 @@ while running:
 
     # Draw game information
     font = pygame.font.Font(None, 24)
-    text = font.render(f"Wave: {wave} | Kills: {kills} | Rounds: {rounds} | Ammo: {ammo}", True, RED)
+    text = font.render(f"Round: {rounds} | Kills: {kills} | Ammo: {ammo}", True, RED)
     win.blit(text, (10, 10))
 
     # Update the display
