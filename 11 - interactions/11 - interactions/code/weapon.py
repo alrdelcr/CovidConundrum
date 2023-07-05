@@ -7,7 +7,7 @@ class Weapon(pygame.sprite.Sprite):
 		direction = player.status.split('_')[0]
 
 		# graphic
-		full_path = f'/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/graphics/weapons/{player.weapon}/{direction}.png'
+		full_path = f'/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/graphics/weapons/{player.weapon}/{direction}.png'
 		self.image = pygame.image.load(full_path).convert_alpha()
 		
 		# placement

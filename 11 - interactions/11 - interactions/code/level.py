@@ -32,14 +32,14 @@ class Level:
 
 	def create_map(self):
 		layouts = {
-			'boundary': import_csv_layout('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/map/map_FloorBlocks.csv'),
-			'grass': import_csv_layout('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/map/map_Grass.csv'),
-			'object': import_csv_layout('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/map/map_Objects.csv'),
-			'entities': import_csv_layout('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/map/map_Entities.csv')
+			'boundary': import_csv_layout('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/map/map_FloorBlocks.csv'),
+			'grass': import_csv_layout('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/map/map_Grass.csv'),
+			'object': import_csv_layout('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/map/map_Objects.csv'),
+			'entities': import_csv_layout('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/map/map_Entities.csv')
 		}
 		graphics = {
-			'grass': import_folder('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/graphics/Grass'),
-			'objects': import_folder('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/graphics/objects')
+			'grass': import_folder('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/graphics/Grass'),
+			'objects': import_folder('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/graphics/objects')
 		}
 
 		for style,layout in layouts.items():
@@ -135,7 +135,7 @@ class YSortCameraGroup(pygame.sprite.Group):
 		self.offset = pygame.math.Vector2()
 
 		# creating the floor
-		self.floor_surf = pygame.image.load('/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/graphics/tilemap/ground.png').convert()
+		self.floor_surf = pygame.image.load('/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/graphics/tilemap/ground.png').convert()
 		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
 	def custom_draw(self,player):

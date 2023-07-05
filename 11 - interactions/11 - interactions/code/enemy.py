@@ -45,7 +45,7 @@ class Enemy(Entity):
 
 	def import_graphics(self,name):
 		self.animations = {'idle':[],'move':[],'attack':[]}
-		main_path = f'/Users/shaysamat/Documents/GitHub/CovidConundrum/11 - interactions/11 - interactions/graphics/monsters/{name}/'
+		main_path = f'C:/Users/aledd/OneDrive/CovidConundrum/11 - interactions/11 - interactions/graphics/monsters/{name}/'
 		for animation in self.animations.keys():
 			self.animations[animation] = import_folder(main_path + animation)
 
